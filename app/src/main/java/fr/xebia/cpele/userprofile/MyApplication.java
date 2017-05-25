@@ -15,10 +15,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        if (sInstance == null) sInstance = this;
-
         mUserRepo = new UserRepository();
+        if (sInstance == null) sInstance = this;
     }
 
     public UserRepository getUserRepo() {

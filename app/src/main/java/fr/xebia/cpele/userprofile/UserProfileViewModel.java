@@ -5,9 +5,20 @@ import android.arch.lifecycle.ViewModel;
 
 class UserProfileViewModel extends ViewModel {
 
-    private LiveData<User> user;
+    private UserRepository mUserRepo;
+
+    private LiveData<User> mUser;
+
+    public UserProfileViewModel() {
+        mUserRepo = MyApplication.get().getUserRepo();
+    }
 
     LiveData<User> getUser() {
-        return user;
+        return mUser;
+    }
+
+    public void init(String userId) {
+        if (mUser != null) return;
+        mUser = mUserRepo.fetchUser(userId);
     }
 }
