@@ -1,5 +1,7 @@
 package fr.xebia.cpele.userprofile;
 
+import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,19 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class UserProfileFragment extends Fragment {
+public class UserProfileFragment extends LifecycleFragment {
 
     public static final String KEY_USER_ID = "USER_ID";
 
     private UserProfileViewModel mViewModel;
+    private TextView mUserIdTextView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_userprofile, container, false);
-        String userId = getArguments().getString(KEY_USER_ID);
-        TextView userIdTextView = (TextView) view.findViewById(R.id.userprofile_tv_userid);
-        userIdTextView.setText(getString(R.string.userprofile_greeting, userId));
+        mUserIdTextView = (TextView) view.findViewById(R.id.userprofile_tv_userid);
         return view;
     }
 
@@ -30,8 +31,15 @@ public class UserProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mViewModel = ViewModelProviders.of(this).get(UserProfileViewModel.class);
-        String userId = getArguments().getString(KEY_USER_ID);
-        mViewModel.init(userId);
+
+        mViewModel.getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                if (user != null) {
+                    mUserIdTextView.setText(getString(R.string.userprofile_greeting, user.getName()));
+                }
+            }
+        });
     }
 
     public static Fragment newInstance(String userId) {
