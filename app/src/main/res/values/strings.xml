@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UserProfile</string>
+    <string name="userprofile_greeting">Hello %1$s!</string>
 </resources>
