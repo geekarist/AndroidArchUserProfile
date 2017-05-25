@@ -6,4 +6,8 @@ public class UserProfileViewModel extends ViewModel {
 
     private String userId;
     private User user;
+
+    public void init(String userId) {
+        userId = userId;
+    }
 }

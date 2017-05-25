@@ -1,5 +1,6 @@
 package fr.xebia.cpele.userprofile;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ public class UserProfileFragment extends Fragment {
 
     public static final String KEY_USER_ID = "USER_ID";
 
+    private UserProfileViewModel mViewModel;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -20,6 +23,15 @@ public class UserProfileFragment extends Fragment {
         TextView userIdTextView = (TextView) view.findViewById(R.id.userprofile_tv_userid);
         userIdTextView.setText(getString(R.string.userprofile_greeting, userId));
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mViewModel = ViewModelProviders.of(this).get(UserProfileViewModel.class);
+        String userId = getArguments().getString(KEY_USER_ID);
+        mViewModel.init(userId);
     }
 
     public static Fragment newInstance(String userId) {
