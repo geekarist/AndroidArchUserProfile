@@ -11,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Fragment userProfileFragment = new UserProfileFragment();
+        Fragment userProfileFragment = UserProfileFragment.newInstance("cpele");
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.main_fl_container_userprofile, userProfileFragment)
