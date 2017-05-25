@@ -42,11 +42,7 @@ public class UserProfileFragment extends LifecycleFragment {
         });
     }
 
-    public static Fragment newInstance(String userId) {
-        UserProfileFragment userProfileFragment = new UserProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(KEY_USER_ID, userId);
-        userProfileFragment.setArguments(args);
-        return userProfileFragment;
+    public static Fragment newInstance() {
+        return new UserProfileFragment();
     }
 }
