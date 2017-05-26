@@ -2,6 +2,8 @@ package fr.xebia.cpele.userprofile;
 
 import android.app.Application;
 
+import retrofit2.Retrofit;
+
 public class MyApplication extends Application {
 
     private static MyApplication sInstance;
@@ -15,7 +17,12 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mUserRepo = new UserRepository();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.github.com").build();
+        final UserProfileApi api = retrofit.create(UserProfileApi.class);
+
+        mUserRepo = new UserRepository(api);
+
         if (sInstance == null) sInstance = this;
     }
 

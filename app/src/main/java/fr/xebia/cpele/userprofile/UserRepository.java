@@ -13,12 +13,11 @@ class UserRepository {
 
     private UserProfileApi mApi;
 
-    UserRepository() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.github.com").build();
-        mApi = retrofit.create(UserProfileApi.class);
+    UserRepository(UserProfileApi api) {
+        mApi = api;
     }
 
-    public LiveData<User> fetchUser(String userId) {
+    LiveData<User> fetchUser(String userId) {
 
         final MutableLiveData<User> data = new MutableLiveData<>();
 
