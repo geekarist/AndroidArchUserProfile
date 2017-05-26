@@ -32,7 +32,7 @@ public class UserProfileFragment extends LifecycleFragment {
 
         mViewModel = ViewModelProviders.of(this).get(UserProfileViewModel.class);
         mViewModel.setUserRepo(MyApplication.get().getUserRepo());
-        mViewModel.init(String.valueOf(mUserIdTextView.getText()));
+        mViewModel.init(String.valueOf("geekarist"));
 
         mViewModel.getUser().observe(this, new Observer<User>() {
             @Override
