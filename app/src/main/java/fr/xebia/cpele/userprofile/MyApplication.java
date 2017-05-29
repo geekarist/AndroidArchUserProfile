@@ -29,6 +29,7 @@ public class MyApplication extends Application {
                 Log.d(MyApplication.this.getClass().getSimpleName(), message);
             }
         });
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
