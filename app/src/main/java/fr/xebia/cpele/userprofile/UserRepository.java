@@ -11,6 +11,7 @@ import retrofit2.Response;
 class UserRepository {
 
     private UserProfileApi mApi;
+    private UserCache mUserCache = new UserCache();
 
     UserRepository(UserProfileApi api) {
         mApi = api;
@@ -18,7 +19,11 @@ class UserRepository {
 
     LiveData<User> fetchUser(String userId) {
 
+        LiveData<User> cached = mUserCache.get(userId);
+        if (cached != null) return cached;
+
         final MutableLiveData<User> data = new MutableLiveData<>();
+        mUserCache.put(userId, data);
 
         mApi.fetchUser(userId).enqueue(new Callback<User>() {
             @Override
