@@ -1,8 +1,13 @@
 package fr.xebia.cpele.userprofile;
 
 import android.app.Application;
+import android.arch.persistence.room.Room;
 import android.support.annotation.NonNull;
 import android.util.Log;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -43,7 +48,10 @@ public class MyApplication extends Application {
 
         final UserProfileApi api = retrofit.create(UserProfileApi.class);
 
-        mUserRepo = new UserRepository(api);
+        final Executor executor = Executors.newFixedThreadPool(2);
+        MyDatabase myDb = Room.databaseBuilder(this, MyDatabase.class, MyDatabase.class.getSimpleName()).build();
+        final UserDao userDao = myDb.userDao();
+        mUserRepo = new UserRepository(api, userDao, executor);
 
         if (sInstance == null) sInstance = this;
     }

@@ -4,20 +4,49 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import java.io.IOException;
+import java.util.concurrent.Executor;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 class UserRepository {
 
+    private static final int FRESH_TIMEOUT = 10;
+
+    private final Executor mExecutor;
     private UserProfileApi mApi;
     private UserCache mUserCache = new UserCache();
+    private UserDao mUserDao;
 
-    UserRepository(UserProfileApi api) {
+    UserRepository(UserProfileApi api, final UserDao userDao, final Executor executor) {
         mApi = api;
+        mUserDao = userDao;
+        mExecutor = executor;
     }
 
     LiveData<User> fetchUser(String userId) {
+        refreshUser(userId);
+        return mUserDao.load(userId);
+    }
+
+    private void refreshUser(final String userId) {
+
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Response<User> response = mApi.fetchUser(userId).execute();
+                    mUserDao.save(response.body());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    LiveData<User> fetchUser2(String userId) {
 
         LiveData<User> cached = mUserCache.get(userId);
         if (cached != null) return cached;

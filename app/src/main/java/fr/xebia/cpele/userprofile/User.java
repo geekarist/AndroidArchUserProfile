@@ -1,5 +1,6 @@
 package fr.xebia.cpele.userprofile;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -10,6 +11,7 @@ public class User {
 
     @SerializedName("id")
     @PrimaryKey
+    @ColumnInfo(name = "id")
     private int mId;
 
     @SerializedName("name")
