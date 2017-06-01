@@ -37,8 +37,10 @@ class UserRepository {
             @Override
             public void run() {
                 try {
+                    if (mUserDao.hasUser(userId)) return;
                     Response<User> response = mApi.fetchUser(userId).execute();
-                    mUserDao.save(response.body());
+                    User user = response.body();
+                    mUserDao.save(user);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

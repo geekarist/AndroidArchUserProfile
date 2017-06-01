@@ -12,7 +12,7 @@ public class User {
     @SerializedName("id")
     @PrimaryKey
     @ColumnInfo(name = "id")
-    private int mId;
+    private String mId;
 
     @SerializedName("name")
     private String mName;
@@ -25,11 +25,11 @@ public class User {
         mName = name;
     }
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(final int id) {
+    public void setId(final String id) {
         mId = id;
     }
 }
